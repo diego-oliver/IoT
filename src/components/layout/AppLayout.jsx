@@ -13,7 +13,6 @@ import {
   Badge,
   useMediaQuery,
   useTheme,
-  Drawer,
   SwipeableDrawer,
 } from '@mui/material';
 import {
