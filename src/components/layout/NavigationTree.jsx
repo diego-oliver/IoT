@@ -18,6 +18,7 @@ import {
   ExpandMore,
   Warning,
   Settings,
+  Timeline,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useApi } from '../../hooks/useApi';
@@ -88,6 +89,17 @@ const NavigationTree = () => {
           <Dashboard />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
+      </ListItemButton>
+
+      {/* Live Monitoring */}
+      <ListItemButton
+        selected={isActive('/live-monitoring')}
+        onClick={() => navigate('/live-monitoring')}
+      >
+        <ListItemIcon>
+          <Timeline />
+        </ListItemIcon>
+        <ListItemText primary="Monitoreo en Vivo" />
       </ListItemButton>
 
       {/* Alarms */}

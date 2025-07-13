@@ -19,6 +19,7 @@ import RoomDetailsPage from './pages/RoomDetailsPage';
 import DeviceDetailsPage from './pages/DeviceDetailsPage';
 import AlarmsPage from './pages/AlarmsPage';
 import SettingsPage from './pages/SettingsPage';
+import LiveMonitoringPage from './pages/LiveMonitoringPage';
 
 function App() {
   const { isLoggedIn } = useAuthStore();
@@ -50,6 +51,7 @@ function App() {
               <Route path="buildings/new" element={<CreateBuildingPage />} />
               <Route path="buildings/:buildingId" element={<BuildingDetailsPage />} />
               <Route path="alarms" element={<AlarmsPage />} />
+              <Route path="live-monitoring" element={<LiveMonitoringPage />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="floors/:floorId" element={<FloorDetailsPage />} />
               <Route path="rooms/:roomId" element={<RoomDetailsPage />} />
