@@ -10,28 +10,22 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  Badge,
   useMediaQuery,
   useTheme,
-  SwipeableDrawer,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
-  Notifications,
   ExitToApp,
   Brightness4,
   Brightness7,
-  Settings,
 } from '@mui/icons-material';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../../store/authStore';
 import useThemeStore from '../../store/themeStore';
-import NavigationTree from './NavigationTree';
-import ResponsiveContainer from '../common/ResponsiveContainer';
 
 const DRAWER_WIDTH = 280;
 
-const AppLayout = () => {
+const AppLayout = ({ children }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
@@ -71,7 +65,11 @@ const AppLayout = () => {
           IoT Building Manager
         </Typography>
       </Toolbar>
-      <NavigationTree />
+      <Box sx={{ p: 2 }}>
+        <Typography variant="body2" color="textSecondary">
+          Dashboard Principal
+        </Typography>
+      </Box>
     </Box>
   );
 
@@ -108,16 +106,6 @@ const AppLayout = () => {
               {isDarkMode ? <Brightness7 /> : <Brightness4 />}
             </IconButton>
             
-            <IconButton color="inherit" onClick={() => navigate('/settings')}>
-              <Settings />
-            </IconButton>
-            
-            <IconButton color="inherit">
-              <Badge badgeContent={3} color="error">
-                <Notifications />
-              </Badge>
-            </IconButton>
-            
             <IconButton onClick={handleUserMenuOpen} sx={{ p: 0, ml: 1 }}>
               <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>
                 {user?.name?.charAt(0) || 'U'}
@@ -147,11 +135,10 @@ const AppLayout = () => {
         }}
       >
         {isMobile ? (
-          <SwipeableDrawer
+          <Drawer
             variant="temporary"
             open={mobileOpen}
             onClose={handleDrawerToggle}
-            onOpen={handleDrawerToggle}
             ModalProps={{
               keepMounted: true,
             }}
@@ -165,7 +152,7 @@ const AppLayout = () => {
             }}
           >
             {drawer}
-          </SwipeableDrawer>
+          </Drawer>
         ) : (
           <Drawer
             variant="permanent"
@@ -195,9 +182,7 @@ const AppLayout = () => {
           overflow: 'auto'
         }}
       >
-        <ResponsiveContainer>
-          <Outlet />
-        </ResponsiveContainer>
+        {children}
       </Box>
     </Box>
   );

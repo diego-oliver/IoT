@@ -12,13 +12,6 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import AppLayout from './components/layout/AppLayout';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
-import BuildingDetailsPage from './pages/BuildingDetailsPage';
-import CreateBuildingPage from './pages/CreateBuildingPage';
-import FloorDetailsPage from './pages/FloorDetailsPage';
-import RoomDetailsPage from './pages/RoomDetailsPage';
-import DeviceDetailsPage from './pages/DeviceDetailsPage';
-import AlarmsPage from './pages/AlarmsPage';
-import SettingsPage from './pages/SettingsPage';
 
 function App() {
   const { isLoggedIn } = useAuthStore();
@@ -39,22 +32,15 @@ function App() {
               element={<Navigate to="/dashboard" replace />} 
             />
             <Route 
-              path="/*" 
+              path="/dashboard" 
               element={
                 <ProtectedRoute>
-                  <AppLayout />
+                  <AppLayout>
+                    <DashboardPage />
+                  </AppLayout>
                 </ProtectedRoute>
               } 
-            >
-              <Route path="dashboard" element={<DashboardPage />} />
-              <Route path="buildings/new" element={<CreateBuildingPage />} />
-              <Route path="buildings/:buildingId" element={<BuildingDetailsPage />} />
-              <Route path="alarms" element={<AlarmsPage />} />
-              <Route path="settings" element={<SettingsPage />} />
-              <Route path="floors/:floorId" element={<FloorDetailsPage />} />
-              <Route path="rooms/:roomId" element={<RoomDetailsPage />} />
-              <Route path="devices/:deviceId" element={<DeviceDetailsPage />} />
-            </Route>
+            />
           </Routes>
           <NotificationSystem />
         </Router>
