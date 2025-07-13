@@ -13,6 +13,8 @@ import {
   Badge,
   useMediaQuery,
   useTheme,
+  Drawer,
+  SwipeableDrawer,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -26,6 +28,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import useAuthStore from '../../store/authStore';
 import useThemeStore from '../../store/themeStore';
 import NavigationTree from './NavigationTree';
+import ResponsiveContainer from '../common/ResponsiveContainer';
 
 const DRAWER_WIDTH = 280;
 
@@ -60,7 +63,12 @@ const AppLayout = () => {
   const drawer = (
     <Box>
       <Toolbar>
-        <Typography variant="h6" noWrap component="div" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
+        <Typography 
+          variant={isMobile ? "subtitle1" : "h6"} 
+          noWrap 
+          component="div" 
+          sx={{ color: 'primary.main', fontWeight: 'bold' }}
+        >
           IoT Building Manager
         </Typography>
       </Toolbar>
@@ -134,40 +142,63 @@ const AppLayout = () => {
       
       <Box
         component="nav"
-        sx={{ width: { md: DRAWER_WIDTH }, flexShrink: { md: 0 } }}
+        sx={{ 
+          width: { md: DRAWER_WIDTH }, 
+          flexShrink: { md: 0 }
+        }}
       >
-        <Drawer
-          variant={isMobile ? 'temporary' : 'permanent'}
-          open={isMobile ? mobileOpen : true}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: DRAWER_WIDTH,
-              borderRight: '1px solid',
-              borderColor: 'divider',
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
+        {isMobile ? (
+          <SwipeableDrawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            onOpen={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true,
+            }}
+            sx={{
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: DRAWER_WIDTH,
+                borderRight: '1px solid',
+                borderColor: 'divider',
+              },
+            }}
+          >
+            {drawer}
+          </SwipeableDrawer>
+        ) : (
+          <Drawer
+            variant="permanent"
+            sx={{
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: DRAWER_WIDTH,
+                borderRight: '1px solid',
+                borderColor: 'divider',
+              },
+            }}
+          >
+            {drawer}
+          </Drawer>
+        )}
       </Box>
       
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: { xs: 1, sm: 2, md: 3 },
           width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
           mt: '64px',
           backgroundColor: 'background.default',
           minHeight: 'calc(100vh - 64px)',
+          overflow: 'auto'
         }}
       >
-        <Outlet />
+        <ResponsiveContainer>
+          <Outlet />
+        </ResponsiveContainer>
       </Box>
     </Box>
   );

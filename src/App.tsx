@@ -6,6 +6,8 @@ import lightTheme from './theme/theme';
 import darkTheme from './theme/darkTheme';
 import useAuthStore from './store/authStore';
 import useThemeStore from './store/themeStore';
+import ErrorBoundary from './components/common/ErrorBoundary';
+import NotificationSystem from './components/common/NotificationSystem';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import AppLayout from './components/layout/AppLayout';
 import LoginPage from './pages/LoginPage';
@@ -25,35 +27,38 @@ function App() {
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <CssBaseline />
-      <Router>
-        <Routes>
-          <Route 
-            path="/login" 
-            element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <LoginPage />} 
-          />
-          <Route 
-            path="/" 
-            element={<Navigate to="/dashboard" replace />} 
-          />
-          <Route 
-            path="/*" 
-            element={
-              <ProtectedRoute>
-                <AppLayout />
-              </ProtectedRoute>
-            } 
-          >
-            <Route path="dashboard" element={<CustomizableDashboard />} />
-            <Route path="buildings/new" element={<CreateBuildingPage />} />
-            <Route path="buildings/:buildingId" element={<BuildingDetailsPage />} />
-            <Route path="alarms" element={<AlarmsPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-            <Route path="floors/:floorId" element={<FloorDetailsPage />} />
-            <Route path="rooms/:roomId" element={<RoomDetailsPage />} />
-            <Route path="devices/:deviceId" element={<DeviceDetailsPage />} />
-          </Route>
-        </Routes>
-      </Router>
+      <ErrorBoundary>
+        <Router>
+          <Routes>
+            <Route 
+              path="/login" 
+              element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <LoginPage />} 
+            />
+            <Route 
+              path="/" 
+              element={<Navigate to="/dashboard" replace />} 
+            />
+            <Route 
+              path="/*" 
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              } 
+            >
+              <Route path="dashboard" element={<CustomizableDashboard />} />
+              <Route path="buildings/new" element={<CreateBuildingPage />} />
+              <Route path="buildings/:buildingId" element={<BuildingDetailsPage />} />
+              <Route path="alarms" element={<AlarmsPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+              <Route path="floors/:floorId" element={<FloorDetailsPage />} />
+              <Route path="rooms/:roomId" element={<RoomDetailsPage />} />
+              <Route path="devices/:deviceId" element={<DeviceDetailsPage />} />
+            </Route>
+          </Routes>
+          <NotificationSystem />
+        </Router>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 }

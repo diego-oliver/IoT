@@ -35,6 +35,7 @@ import AlarmsWidget from './widgets/AlarmsWidget';
 import EnergyWidget from './widgets/EnergyWidget';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
+import { useTheme, useMediaQuery } from '@mui/material';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -60,6 +61,9 @@ const CustomizableDashboard = () => {
   const { widgets, isEditMode, updateWidgetLayout, toggleEditMode, addWidget, removeWidget, resetLayout } = useDashboardStore();
   const [addWidgetDialog, setAddWidgetDialog] = useState(false);
   const [selectedWidgetType, setSelectedWidgetType] = useState('');
+  
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleLayoutChange = (layout) => {
     if (isEditMode) {
@@ -118,12 +122,19 @@ const CustomizableDashboard = () => {
   return (
     <Box sx={{ position: 'relative', minHeight: '100vh' }}>
       {/* Control Panel */}
-      <Box sx={{ mb: 2, display: 'flex', gap: 1, alignItems: 'center' }}>
+      <Box sx={{ 
+        mb: 2, 
+        display: 'flex', 
+        gap: 1, 
+        alignItems: 'center',
+        flexWrap: 'wrap'
+      }}>
         <Button
           variant={isEditMode ? 'contained' : 'outlined'}
           startIcon={isEditMode ? <Save /> : <Edit />}
           onClick={toggleEditMode}
           color={isEditMode ? 'success' : 'primary'}
+          size={isMobile ? 'small' : 'medium'}
         >
           {isEditMode ? 'Save Layout' : 'Edit Layout'}
         </Button>
@@ -134,6 +145,7 @@ const CustomizableDashboard = () => {
               variant="outlined"
               startIcon={<Add />}
               onClick={() => setAddWidgetDialog(true)}
+              size={isMobile ? 'small' : 'medium'}
             >
               Add Widget
             </Button>
@@ -141,6 +153,7 @@ const CustomizableDashboard = () => {
               variant="outlined"
               startIcon={<Refresh />}
               onClick={resetLayout}
+              size={isMobile ? 'small' : 'medium'}
             >
               Reset Layout
             </Button>
@@ -152,14 +165,15 @@ const CustomizableDashboard = () => {
       <ResponsiveGridLayout
         className="layout"
         layouts={{ lg: widgets }}
-        breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+        breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 320 }}
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-        rowHeight={60}
+        rowHeight={isMobile ? 50 : 60}
         onLayoutChange={handleLayoutChange}
         isDraggable={isEditMode}
         isResizable={isEditMode}
-        margin={[16, 16]}
+        margin={isMobile ? [8, 8] : [16, 16]}
         containerPadding={[0, 0]}
+        compactType="vertical"
       >
         {widgets.map(renderWidget)}
       </ResponsiveGridLayout>

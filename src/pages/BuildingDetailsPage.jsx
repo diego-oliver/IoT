@@ -45,6 +45,8 @@ import ChartWrapper from '../components/common/ChartWrapper';
 import ExportButton from '../components/common/ExportButton';
 import ErrorDisplay from '../components/common/ErrorDisplay';
 import LoadingOverlay from '../components/common/LoadingOverlay';
+import ResponsiveDataGrid from '../components/common/ResponsiveDataGrid';
+import { DashboardSkeleton } from '../components/common/LoadingSkeleton';
 
 const BuildingDetailsPage = () => {
   const { buildingId } = useParams();
@@ -264,7 +266,7 @@ const BuildingDetailsPage = () => {
   }
 
   if (buildingLoading || !building) {
-    return <LoadingOverlay message="Loading building details..." />;
+    return <DashboardSkeleton />;
   }
 
   return (
@@ -401,16 +403,45 @@ const BuildingDetailsPage = () => {
               </Button>
             </Box>
             
-            <Box sx={{ height: 400, width: '100%', position: 'relative' }}>
-              {floorsLoading && <LoadingOverlay />}
-              <DataGrid
+            <ResponsiveDataGrid
                 rows={floors || []}
                 columns={floorColumns}
-                pageSize={10}
-                rowsPerPageOptions={[10, 25]}
-                disableSelectionOnClick
-              />
-            </Box>
+                loading={floorsLoading}
+                title="Pisos del Edificio"
+                mobileCardRenderer={(row, isExpanded, onToggle) => (
+                  <Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Typography variant="h6">
+                        Piso {row.floor_number}
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Switch
+                          checked={row.is_simulating}
+                          onChange={(e) => handleFloorSimulationToggle(row.id, e.target.checked)}
+                          size="small"
+                        />
+                        <IconButton size="small" onClick={() => openFloorDialog(row)}>
+                          <Edit />
+                        </IconButton>
+                        <IconButton 
+                          size="small" 
+                          onClick={() => setDeleteDialog({ open: true, floorId: row.id })}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </Box>
+                    </Box>
+                    <Typography variant="body2" color="textSecondary">
+                      Creado: {new Date(row.created_at).toLocaleDateString()}
+                    </Typography>
+                    {row.plan_url && (
+                      <Button size="small" href={row.plan_url} target="_blank" sx={{ mt: 1 }}>
+                        Ver Plano
+                      </Button>
+                    )}
+                  </Box>
+                )}
+            />
           </CardContent>
         </Card>
       )}
