@@ -35,7 +35,7 @@ const NavigationTree = () => {
 
   useEffect(() => {
     fetchBuildings();
-  }, [fetchBuildings]);
+  }, []);
 
   const handleToggleExpand = async (itemId, type, parentId = null) => {
     const newExpanded = new Set(expandedItems);
@@ -89,17 +89,6 @@ const NavigationTree = () => {
           <Dashboard />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
-      </ListItemButton>
-
-      {/* Live Monitoring */}
-      <ListItemButton
-        selected={isActive('/live-monitoring')}
-        onClick={() => navigate('/live-monitoring')}
-      >
-        <ListItemIcon>
-          <Timeline />
-        </ListItemIcon>
-        <ListItemText primary="Monitoreo en Vivo" />
       </ListItemButton>
 
       {/* Alarms */}
