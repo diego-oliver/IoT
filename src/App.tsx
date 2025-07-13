@@ -12,6 +12,14 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import AppLayout from './components/layout/AppLayout';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
+import BuildingDetailsPage from './pages/BuildingDetailsPage';
+import FloorDetailsPage from './pages/FloorDetailsPage';
+import RoomDetailsPage from './pages/RoomDetailsPage';
+import DeviceDetailsPage from './pages/DeviceDetailsPage';
+import AlarmsPage from './pages/AlarmsPage';
+import SettingsPage from './pages/SettingsPage';
+import CreateBuildingPage from './pages/CreateBuildingPage';
+import LiveMonitoringPage from './pages/LiveMonitoringPage';
 
 function App() {
   const { isLoggedIn } = useAuthStore();
@@ -37,6 +45,86 @@ function App() {
                 <ProtectedRoute>
                   <AppLayout>
                     <DashboardPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/buildings" 
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <CreateBuildingPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/buildings/:buildingId" 
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <BuildingDetailsPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/floors/:floorId" 
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <FloorDetailsPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/rooms/:roomId" 
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <RoomDetailsPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/devices/:deviceId" 
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <DeviceDetailsPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/alarms" 
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <AlarmsPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/settings" 
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <SettingsPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/live-monitoring" 
+              element={
+                <ProtectedRoute>
+                  <AppLayout>
+                    <LiveMonitoringPage />
                   </AppLayout>
                 </ProtectedRoute>
               } 

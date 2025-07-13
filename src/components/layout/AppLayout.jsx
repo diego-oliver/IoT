@@ -12,14 +12,25 @@ import {
   MenuItem,
   useMediaQuery,
   useTheme,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
   ExitToApp,
   Brightness4,
   Brightness7,
+  Dashboard,
+  Business,
+  Warning,
+  Settings,
+  Timeline,
 } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import useAuthStore from '../../store/authStore';
 import useThemeStore from '../../store/themeStore';
 
@@ -29,6 +40,7 @@ const AppLayout = ({ children }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, logout } = useAuthStore();
   const { isDarkMode, toggleTheme } = useThemeStore();
   
@@ -53,6 +65,14 @@ const AppLayout = ({ children }) => {
     handleUserMenuClose();
   };
 
+  const menuItems = [
+    { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
+    { text: 'Edificios', icon: <Business />, path: '/buildings' },
+    { text: 'Monitoreo en Vivo', icon: <Timeline />, path: '/live-monitoring' },
+    { text: 'Alarmas', icon: <Warning />, path: '/alarms' },
+    { text: 'Configuración', icon: <Settings />, path: '/settings' },
+  ];
+
   const drawer = (
     <Box>
       <Toolbar>
@@ -65,11 +85,25 @@ const AppLayout = ({ children }) => {
           IoT Building Manager
         </Typography>
       </Toolbar>
-      <Box sx={{ p: 2 }}>
-        <Typography variant="body2" color="textSecondary">
-          Dashboard Principal
-        </Typography>
-      </Box>
+      <Divider />
+      <List>
+        {menuItems.map((item) => (
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton
+              selected={location.pathname === item.path}
+              onClick={() => {
+                navigate(item.path);
+                if (isMobile) setMobileOpen(false);
+              }}
+            >
+              <ListItemIcon>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
     </Box>
   );
 
@@ -98,7 +132,7 @@ const AppLayout = ({ children }) => {
           </IconButton>
           
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Dashboard
+            {menuItems.find(item => item.path === location.pathname)?.text || 'Dashboard'}
           </Typography>
           
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
